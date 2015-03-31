@@ -33,6 +33,8 @@ For each available node, `dnslg` will output the response received in presentati
 
         xyz. 3186 IN SOA ns0.centralnic.net. hostmaster.centralnic.net. 3000170814 900 1800 6048000 3600
 
+    ... and so on
+
 Output will be coloured if your terminal supports it.
 
 # LICENSE
