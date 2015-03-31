@@ -8,17 +8,17 @@ dnslg - A command line interface to the dns-lg DNS Looking Glass service.
 
 # ARGUMENTS
 
-- --help | -h
+- `--help | -h`
 
     Display this help message
 
-- QNAME
+- `QNAME`
 
-    Fully-qualified domain name to query. Defaults to EXAMPLE.COM
+    Fully-qualified domain name to query. Defaults to `EXAMPLE.COM`.
 
-- QTYPE
+- <CQTYPE>
 
-    Query type. Defaults to A.
+    Query type. Defaults to `A`.
 
 # OUTPUT
 
@@ -32,6 +32,8 @@ For each available node, `dnslg` will output the response received in presentati
     Response from ch02 (Swiss Privacy Foundation, Switzerland, AS13030):
 
         xyz. 3186 IN SOA ns0.centralnic.net. hostmaster.centralnic.net. 3000170814 900 1800 6048000 3600
+
+Output will be coloured if your terminal supports it.
 
 # LICENSE
 
