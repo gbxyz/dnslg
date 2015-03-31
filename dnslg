@@ -54,7 +54,7 @@ foreach my $node (@{$nodes->{'nodes'}}) {
 
 =head1 NAME
 
-dnslg - A command line interface to the dns-lg DNS Looking Glass service.
+dnslg - A command line interface to the dns-lg.com DNS Looking Glass service.
 
 =head1 USAGE
 

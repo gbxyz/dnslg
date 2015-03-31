@@ -1,6 +1,6 @@
 # NAME
 
-dnslg - A command line interface to the dns-lg DNS Looking Glass service.
+dnslg - A command line interface to the dns-lg.com DNS Looking Glass service.
 
 # USAGE
 
