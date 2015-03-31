@@ -17,7 +17,7 @@ my $file	= $ENV{'HOME'}.'/.'.basename($url);
 
 my $result = mirror($url, $file);
 if ($result > 399) {
-	printf("%sError: got %d status when retrieving %s%s\n", BOLD.RED, $result, $url);
+	printf("%sError: got %d status when retrieving %s%s\n", BOLD.RED, $result, $url, RESET);
 	exit(1);
 }
 
