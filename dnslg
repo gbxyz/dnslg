@@ -1,0 +1,115 @@
+#!/usr/bin/perl
+use LWP::Simple;
+use JSON;
+use strict;
+use File::Basename qw(basename);
+use File::Slurp;
+use Term::ANSIColor qw(:constants);
+use Pod::Usage;
+use Getopt::Long;
+
+my $help;
+GetOptions('help' => $help);
+pod2usage(1) if ($help);
+
+my $qname	= shift || 'example.com';
+my $qtype	= shift || 'A';
+my $base	= 'http://www.dns-lg.com';
+my $url		= $base.'/nodes.json';
+my $file	= $ENV{'HOME'}.'/.'.basename($url);
+
+my $result = mirror($url, $file);
+if ($result > 399) {
+	printf("%sError: got %d status when retrieving %s%s\n", BOLD.RED, $result, $url);
+	exit(1);
+}
+
+undef $/;
+open(NODES, $file);
+my $nodes = from_json(<NODES>);
+close(NODES);
+
+foreach my $node (@{$nodes->{'nodes'}}) {
+	my $json = get(sprintf('%s/%s/%s/%s', $base, $node->{'name'}, $qname, $qtype));
+
+	if (!$json) {
+		printf("%sNo response from %s (%s, %s, %s)%s\n\n", BOLD.RED, $node->{'name'}, $node->{'operator'}, $node->{'country'}, $node->{'asn'}, RESET);
+
+	} else {
+		my $data = from_json($json);
+		printf("%sResponse from %s (%s, %s, %s):\n\n%s", BOLD.GREEN, $node->{'name'}, $node->{'operator'}, $node->{'country'}, $node->{'asn'}, RESET);
+		foreach my $rr (@{$data->{'answer'}}) {
+			printf(
+				"    %s %u %s %s %s\n",
+				$rr->{'name'},
+				$rr->{'ttl'},
+				$rr->{'class'},
+				$rr->{'type'},
+				$rr->{'rdata'},
+			)
+		}
+		print "\n";
+
+	}
+}
+
+=pod
+
+=head1 NAME
+
+dnslg - A command line interface to the dns-lg DNS Looking Glass service.
+
+=head1 USAGE
+
+    dnslg OPTIONS | [QNAME [QTYPE]]
+
+=head1 ARGUMENTS
+
+=over
+
+=item --help
+
+Display this help message
+
+=item QNAME
+
+Fully-qualified domain name to query. Defaults to EXAMPLE.COM
+
+=item QTYPE
+
+Query type. Defaults to A.
+
+=back
+
+=head1 OUTPUT
+
+For each available node, C<dnslg> will output the response received in presentation format. Example:
+
+    $ dnslg xyz SOA
+    Response from ch01 (Swiss Privacy Foundation, Switzerland, AS13030):
+
+        xyz. 3185 IN SOA ns0.centralnic.net. hostmaster.centralnic.net. 3000170814 900 1800 6048000 3600
+
+    Response from ch02 (Swiss Privacy Foundation, Switzerland, AS13030):
+
+        xyz. 3186 IN SOA ns0.centralnic.net. hostmaster.centralnic.net. 3000170814 900 1800 6048000 3600
+
+=head1 LICENSE
+
+This program is Free Software; you can use it and/or modify it under the same terms as Perl itself.
+
+=head1 COPYRIGHT
+
+Copyright 2015 CentralNic Group plc.
+
+=head1 SEE ALSO
+
+=over
+
+=item L<http://www.dns-lg.com>
+
+=item L<https://www.centralnic.com>
+
+=back
+
+=cut
