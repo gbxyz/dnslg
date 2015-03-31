@@ -8,7 +8,7 @@ dnslg - A command line interface to the dns-lg DNS Looking Glass service.
 
 # ARGUMENTS
 
-- --help
+- --help | -h
 
     Display this help message
 

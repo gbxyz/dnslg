@@ -6,11 +6,8 @@ use File::Basename qw(basename);
 use File::Slurp;
 use Term::ANSIColor qw(:constants);
 use Pod::Usage;
-use Getopt::Long;
 
-my $help;
-GetOptions('help' => $help);
-pod2usage(1) if ($help);
+pod2usage(1) if ($ARGV[0] eq '-h' || $ARGV[0] eq '--help');
 
 my $qname	= shift || 'example.com';
 my $qtype	= shift || 'A';
@@ -67,7 +64,7 @@ dnslg - A command line interface to the dns-lg DNS Looking Glass service.
 
 =over
 
-=item --help
+=item --help | -h
 
 Display this help message
 
